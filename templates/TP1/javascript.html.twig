@@ -1,1 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercice 2 - JavaScript</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-white p-4">
 
+<div class="container">
+    <h1 class="text-center text-warning mb-5">Exercice 2 — JavaScript</h1>
+
+    {# ============================== #}
+    {# 2-1 : Calcul de l'âge         #}
+    {# ============================== #}
+    <div class="card bg-secondary text-white mb-4 p-4">
+        <h3 class="text-warning">Calcul de l'âge</h3>
+        <button class="btn btn-warning text-dark fw-bold mt-2" id="btn_age">
+            Entrer mon année de naissance
+        </button>
+        <p id="id_Age" class="mt-3 fs-5"></p>
+    </div>
+
+    {# ============================== #}
+    {# 2-2 : Survol souris            #}
+    {# ============================== #}
+    <div class="card bg-secondary text-white mb-4 p-4">
+        <h3 class="text-warning">Effet au survol</h3>
+        <p id="para_survol" class="mt-3">
+            Passez la souris sur ce texte pour voir l'effet !
+        </p>
+    </div>
+
+    {# ============================== #}
+    {# 2-3 : Liste des BUT            #}
+    {# ============================== #}
+    <div class="card bg-secondary text-white mb-4 p-4">
+        <h3 class="text-warning">Liste des BUT de l'IUT de Roanne</h3>
+        <ul id="liste_but" class="mt-3">
+            <li>BUT RT</li>
+            <li>BUT GIM</li>
+        </ul>
+        <div class="d-flex gap-2 mt-2">
+            <button class="btn btn-success" id="btn_ajouter">Ajouter</button>
+            <button class="btn btn-danger"  id="btn_supprimer">Supprimer le dernier</button>
+        </div>
+    </div>
+
+</div>
+
+{# jQuery en premier #}
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+<script>
+
+// ==============================
+// 2-1 : Calcul de l'âge
+// ==============================
+$("#btn_age").on("click", function() {
+
+    var annee = prompt("Entrez votre année de naissance :");
+
+    // Annulé ou vide
+    if (annee === null || annee.trim() === "") {
+        alert("Vous n'avez rien saisi !");
+        return;
+    }
+
+    // Vérification numérique
+    if (isNaN(annee)) {
+        alert("Ce n'est pas une valeur numérique !");
+        return;
+    }
+
+    var anneeInt      = parseInt(annee);
+    var anneeActuelle = new Date().getFullYear();
+    var age           = anneeActuelle - anneeInt;
+
+    // Vérification cohérence
+    if (age < 0 || age > 120) {
+        alert("Année de naissance invalide !");
+        return;
+    }
+
+    // Affichage dans id_Age
+    $("#id_Age").html(
+        "<span class='badge bg-warning text-dark fs-5'>Vous avez " + age + " ans !</span>"
+    );
+});
+
+
+// ==============================
+// 2-2 : Survol souris
+// ==============================
+$("#para_survol").on("mouseover", function() {
+    $(this).css({
+        "font-size":   "30px",
+        "font-style":  "italic",
+        "color":       "red"
+    });
+});
+
+$("#para_survol").on("mouseout", function() {
+    $(this).css({
+        "font-size":   "",
+        "font-style":  "",
+        "color":       ""
+    });
+});
+
+
+// ==============================
+// 2-3 : Liste des BUT
+// ==============================
+var butsDisponibles = ["BUT MMI", "BUT INFO", "BUT GEII", "BUT TC", "BUT GB"];
+var indexAjout = 0;
+
+$("#btn_ajouter").on("click", function() {
+    if (indexAjout < butsDisponibles.length) {
+        $("#liste_but").append("<li>" + butsDisponibles[indexAjout] + "</li>");
+        indexAjout++;
+    } else {
+        alert("Plus de BUT à ajouter !");
+    }
+});
+
+$("#btn_supprimer").on("click", function() {
+    var items = $("#liste_but li");
+    if (items.length > 0) {
+        items.last().remove();
+        if (indexAjout > 0) indexAjout--;
+    } else {
+        alert("La liste est déjà vide !");
+    }
+});
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
